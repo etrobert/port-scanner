@@ -1,0 +1,12 @@
+Lecture du sujet
+Recherche sur la notation CIDR
+Lecture du man nmap(1)
+Tests de nmap
+Recherche sur le format XSL
+Analyse des différences entre le XSL par défault et le résultat attendu du sujet
+Recherche sur comment obtenir l'addresse MAC des cibles
+Implémentation d'une premiere version
+  Recherche générales sur python
+    subprocess
+    temporary files
+    file deletion
