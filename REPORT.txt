@@ -10,3 +10,6 @@ Implémentation d'une premiere version
     subprocess
     temporary files
     file deletion
+Relecture du sujet afin d'identifier les tâches restantes
+Recherche sur les scripts nmap NSE
+Rédaction d'une version préliminaire du README.txt

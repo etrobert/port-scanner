@@ -3,6 +3,9 @@ import sys
 import os
 
 def new_filename(pattern):
+    """Returns the first filename matching pattern for which a file does not exist
+    :param pattern: a pattern of the form *%s*
+    """
     i = 0
     while os.path.exists(pattern % i):
         i += 1
