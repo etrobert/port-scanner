@@ -24,8 +24,12 @@ if __name__ == "__main__":
          "-Taggressive",
          "--script=vulscan/vulscan.nse",
          "-oX", tmp_filename] + sys.argv[1:])
+    # if nmap encountered an error, terminate
     if returncode:
         sys.exit()
-    html_filename = new_filename("scan%s.html")
-    subprocess.call(["xsltproc", tmp_filename, "-o", html_filename])
-    os.remove(tmp_filename)
+    try:
+        html_filename = new_filename("scan%s.html")
+        subprocess.call(["xsltproc", tmp_filename, "-o", html_filename])
+        print("Scan successfull. Results are in: " + html_filename)
+    finally:
+        os.remove(tmp_filename)
