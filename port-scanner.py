@@ -16,7 +16,7 @@ def new_filename(pattern):
 if __name__ == "__main__":
     tmp_filename = new_filename(".scan%s.xml")
     returncode = subprocess.call(
-        ["nmap", "-v", "-sV", "-oX", tmp_filename] + sys.argv[1:])
+        ["nmap", "-v", "-sV", "-Taggressive", "-oX", tmp_filename] + sys.argv[1:])
     if returncode:
         sys.exit()
     html_filename = new_filename("scan%s.html")

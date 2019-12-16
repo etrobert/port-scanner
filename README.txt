@@ -37,5 +37,5 @@ Instructions de tests:
 Implémentation:
 ======
 port-scanner fait l'appel à nmap suivant:
-nmap -v -sV -oX file args
+nmap -v -sV -T4 -oX file args
 où file est un fichier xml temporaire et args sont les arguments passés à port-scanner
