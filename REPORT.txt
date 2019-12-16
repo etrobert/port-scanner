@@ -54,9 +54,9 @@ Lecture du man nmap(1)
 Tests de nmap
 Recherche sur le format XSL
 Analyse des différences entre le XSL par défault et le résultat attendu du sujet
-Recherche sur comment obtenir l'addresse MAC des cibles
-Implémentation d'une premiere version
-  Recherche générales sur python
+Recherche sur l'obtention de l'addresse MAC des cibles
+Implémentation d'une première version
+  Recherches générales sur python
     subprocess
     temporary files
     file deletion
@@ -78,11 +78,11 @@ Recherche sur les CVE
 Recherche sur Vulscan
 Recherche sur l'installation de scripts NSE
 Tests de Vulscan
-Elaboration de la documentation
+Élaboration de la documentation
 Améliorations mineures (suppression du fichier temporaire en cas d'erreur)
 Investigation des options de nmap comprises dans -A
 Test de nmap -O
-nmap -O empeche le lancement du programme s'il l'utilisateur n'est pas root: abandon
+nmap -O empêche le lancement du programme si l'utilisateur n'est pas root: abandon
 nmap -A contient plus d'options qui mériteraient d'être investiguées et n'est pas bloquant si non root
 Tests de ftp-anon.
-Affichage par default jugé trop peu clair pour être inclus dans un programme "simple": abandon
+Affichage par default de ftp-anon jugé trop peu clair pour être inclus dans un programme "simple": abandon
