@@ -1,3 +1,53 @@
+=======
+Rapport
+=======
+
+Ressources Utilisées
+====================
+J'ai passé les deux soirées de samedi et dimanche sur l'exercice.
+J'ai massivement utilisé le man de nmap.
+J'ai utilisé le site de nmap, qui m'a orienté vers xsltproc, et qui m'a fourni une liste de scripts NSE.
+J'ai massivement utilisé DuckDuckGo pour mes recherches.
+J'ai consulté plusieurs sites mentionnant l'automatisation de la recherche de CVE au travers des scripts NSE.
+
+Sécurité
+========
+Je n'ai pas vérifié pour sûr que vulscan est un programme de confiance, plus de recherches seraient nécessaires (j'aurai jugé une mention sur le site de nmap, d'une autre entité de confiance, voir une lecture attentive du code source suffisant).
+
+Performance
+===========
+J'ai réalisé dimanche soir en tombant sur un binding python de nmap que l'intention était surement de me faire utiliser plus de python, et moins de système.
+Cependant, l'overhead induit par les quelques appels système que je fais, nottement pour la création et suppression du fichier temporaire et les tests d'existance de fichier de new_filename, me semblent dérisoires par rapport au temps d'éxécution de nmap.
+De plus, port-scanner comme nmap ne sont je pense pas faits pour être executés de nombreuses fois successivement, ou en parallèle, car donner une liste de cibles à nmap directement lui permet certainement de faire des optimisations.
+J'ai voulu utiliser le module tempfile (tempfile.NamedTemporaryFile) de python pour générer le fichier temporaire, mais je n'ai pas trouvé comment sans qu'il soit deux fois ouvert en simultané, ce qui aurait ruiné toutes chances de compatibilité avec Windows.
+
+Système d'Exploitation
+======================
+Sans mention d'un système d'exploitation dans le sujet, j'ai essayé de maintenir l'implémentation cross-platform.
+Toutes les dépendances utilisées sont disponibles sous Linux, Mac et Windows.
+Cependant, je n'ai réelement testé le programme que sous Arch Linux.
+Je ne suis pas assez à l'aise sous Windows pour opérer l'installation des dépendances, et je n'ai pas de Mac à disposition.
+
+Tests
+=====
+Le code est un wrapper très très léger.
+J'aurai pu faire une fonction de test pour la fonction new_filename, mais ça m'a semblé un peu overkill.
+J'aurai pu faire des tests fonctionnels, mais leur écriture aurait impliqué un parsing du html intelligent, pour s'adapter à la date par example.
+De plus, ça aurait certainement nécessité l'utilisation ou l'écriture d'un MOC d'hôte, multipliant la complexité de l'exercice.
+De plus, on pourrait argumenter que ces tests seraient quasi identiques à ceux de nmap lui même.
+J'ai d'ailleurs essayé d'aller voir leurs tests pour m'inspirer, sans grand succès.
+
+Root Access
+===========
+Bien que j'ai fais en sorte que le programme soit exécutable sans root access,
+L'installation des dépendances et du programme dans des paths standards le nécessite.
+
+Logs
+====
+Ci dessous se trouvent mes logs, que j'ai écris au fur et à mesure.
+
+Samedi Soir
+===========
 Lecture du sujet
 Recherche sur la notation CIDR
 Lecture du man nmap(1)
@@ -13,3 +63,26 @@ Implémentation d'une premiere version
 Relecture du sujet afin d'identifier les tâches restantes
 Recherche sur les scripts nmap NSE
 Rédaction d'une version préliminaire du README.txt
+
+Dimanche Soir
+=============
+Relecture, optimisation mineure
+Réflection sur l'OS cible
+Réflection sur les Tests
+Recherche sur les tests performés par nmap sur son dépôt
+Résolution de ne pas faire de tests au vu de la simplicité du wrapper
+Exploration des NSE sur le site de nmap
+Tests de ftp-anon
+Mise en pause de ftp-anon
+Recherche sur les CVE
+Recherche sur Vulscan
+Recherche sur l'installation de scripts NSE
+Tests de Vulscan
+Elaboration de la documentation
+Améliorations mineures (suppression du fichier temporaire en cas d'erreur)
+Investigation des options de nmap comprises dans -A
+Test de nmap -O
+nmap -O empeche le lancement du programme s'il l'utilisateur n'est pas root: abandon
+nmap -A contient plus d'options qui mériteraient d'être investiguées et n'est pas bloquant si non root
+Tests de ftp-anon.
+Affichage par default jugé trop peu clair pour être inclus dans un programme "simple": abandon
