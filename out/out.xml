@@ -1,3 +1,0 @@
-<nmaprun><runstats><finished time="1576348129" timestr="Sat Dec 14 19:28:49 2019" elapsed="0.03" summary="Nmap done at Sat Dec 14 19:28:49 2019; 0 IP addresses (0 hosts up) scanned in 0.03 seconds" exit="error" errormsg="Could not parse as a prefix nor find as a vendor substring the given -&#45;spoof-mac argument: localhost.  If you are giving hex digits, there must be an even number of them."/><hosts up="0" down="0" total="0"/>
-</runstats>
-</nmaprun>
