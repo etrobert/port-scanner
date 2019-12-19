@@ -1,5 +1,6 @@
 .scan*.xml
 scan*.html
 
+*.pyc
 __pycache__
 .pytest_cache
