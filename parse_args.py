@@ -4,6 +4,9 @@ import re
 
 
 def is_valid_hostname(hostname):
+    # Test for empty string to prevent out of range exception
+    if not hostname:
+        return False
     # Updated from: https://stackoverflow.com/questions/2532053/validate-a-hostname-string#2532344
     if hostname[-1] == ".":
         # strip exactly one dot from the right, if present

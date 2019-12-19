@@ -94,3 +94,5 @@ Analyse des attentes du mail
 Lecture de la doc de argsparse
 Lecture de la doc du module ipaddress
 Implementation d'une version d'argument parser
+Investigation de pytest
+Implémentation de batteries de test
