@@ -3,7 +3,7 @@
 import subprocess
 import sys
 import os
-from parse_args import parse_args
+from .parse_args import parse_args
 
 
 def new_filename(pattern):

@@ -1,4 +1,4 @@
-from parse_args import is_valid_hostname, is_valid_ip, is_valid_target
+from port_scanner.parse_args import is_valid_hostname, is_valid_ip, is_valid_target
 
 
 def test_is_valid_hostname_label_length():
