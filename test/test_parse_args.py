@@ -31,6 +31,7 @@ def test_is_valid_hostname_dot():
 
 def test_is_valid_hostname():
   assert is_valid_hostname("localhost")
+  assert is_valid_hostname("LOCALHOST")
   assert is_valid_hostname("a")
   assert is_valid_hostname("google.com")
   assert is_valid_hostname("www.google.com")

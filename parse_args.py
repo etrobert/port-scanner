@@ -2,33 +2,28 @@ import argparse
 import ipaddress
 import re
 
+hostname_label_regex = r"(?!-)[a-zA-Z\d-]{1,63}(?<!-)"
+hostname_regex = r"(?=^.{1,253}\.?$)(" + hostname_label_regex + r"\.)*" + \
+    r"(" + hostname_label_regex + r"\.?)"
+ipv4_regex = r"(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])"
+# Source: https://stackoverflow.com/questions/53497/regular-expression-that-matches-valid-ipv6-addresses
+ipv6_regex = r"([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])"
+ip_regex = r"(" + ipv4_regex + r")|(" + ipv6_regex + r")"
+cidr_regex = r"\/([0-9]|[1-2][0-9]|3[0-2])"
+target_regex = r"((" + hostname_regex + r")|(" + ip_regex + r"))" + \
+    r"(" + cidr_regex + r")?"
+
 
 def is_valid_hostname(hostname):
-    # Test for empty string to prevent out of range exception
-    if not hostname:
-        return False
-    # Updated from: https://stackoverflow.com/questions/2532053/validate-a-hostname-string#2532344
-    if hostname[-1] == ".":
-        # strip exactly one dot from the right, if present
-        hostname = hostname[:-1]
-    if len(hostname) > 253:
-        return False
-    allowed = re.compile(r"(?!-)[A-Z\d-]{1,63}(?<!-)$", re.IGNORECASE)
-    return all(allowed.match(x) for x in hostname.split("."))
+    return re.compile(hostname_regex + r"$").match(hostname)
 
 
-def is_valid_interface(target):
-    try:
-        ipaddress.ip_interface(target)
-    except ValueError:
-        return False
-    return True
+def is_valid_ip(ip):
+    return re.compile(ip_regex + r"$").match(ip)
 
 
 def is_valid_target(target):
-    # A valid IP address and a valid IP network are a valid IP interface
-    # So the test for those is implicit
-    return is_valid_hostname(target) or is_valid_interface(target)
+    return re.compile(target_regex + r"$").match(target)
 
 
 def parse_target(target):
@@ -65,4 +60,3 @@ def parse_args():
         args.target = args.file
         del args.file
     return args
-
