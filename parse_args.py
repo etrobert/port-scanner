@@ -2,29 +2,34 @@ import argparse
 import ipaddress
 import re
 
-hostname_label_regex = r"(?!-)[a-zA-Z\d-]{1,63}(?<!-)"
-hostname_regex = r"(?=^.{1,253}\.?$)(" + hostname_label_regex + r"\.)*" + \
-    r"(" + hostname_label_regex + r"\.?)"
-ipv4_regex = r"(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])"
-# Source: https://stackoverflow.com/questions/53497/regular-expression-that-matches-valid-ipv6-addresses
-ipv6_regex = r"([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])"
-ip_regex = r"(" + ipv4_regex + r")|(" + ipv6_regex + r")"
-cidr_regex = r"\/([0-9]|[1-2][0-9]|3[0-2])"
-target_regex = r"((" + hostname_regex + r")|(" + ip_regex + r"))" + \
-    r"(" + cidr_regex + r")?"
-
+hostname_regex = r"^(?=^.{1,253}\.?$)((?!-)[a-zA-Z\d-]{1,63}(?<!-)\.)*((?!-)[a-zA-Z\d-]{1,63}(?<!-)\.?)$"
 
 def is_valid_hostname(hostname):
-    return re.compile(hostname_regex + r"$").match(hostname)
+    return re.compile(hostname_regex).match(hostname)
 
 
 def is_valid_ip(ip):
-    return re.compile(ip_regex + r"$").match(ip)
+    try:
+        ipaddress.ip_address(ip)
+        return True
+    except ValueError:
+        return False
 
 
 def is_valid_target(target):
-    return re.compile(target_regex + r"$").match(target)
-
+    split = target.split('/')
+    if len(split) > 2 or len(split) < 1:
+        return False
+    if not is_valid_hostname(split[0]) and not is_valid_ip(split[0]):
+        return False
+    if len(split) == 2:
+        try:
+            cidr = int(split[1])
+            if cidr < 0 or cidr > 32:
+                return False
+        except ValueError:
+            return False
+    return True
 
 def parse_target(target):
     if not is_valid_target(target):
