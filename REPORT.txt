@@ -86,3 +86,11 @@ nmap -O empêche le lancement du programme si l'utilisateur n'est pas root: aban
 nmap -A contient plus d'options qui mériteraient d'être investiguées et n'est pas bloquant si non root
 Tests de ftp-anon.
 Affichage par default de ftp-anon jugé trop peu clair pour être inclus dans un programme "simple": abandon
+
+Mercredi Soir
+=============
+
+Analyse des attentes du mail
+Lecture de la doc de argsparse
+Lecture de la doc du module ipaddress
+Implementation d'une version d'argument parser
