@@ -4,6 +4,7 @@ import re
 
 hostname_regex = r"^(?=^.{1,253}\.?$)((?!-)[a-zA-Z\d-]{1,63}(?<!-)\.)*((?!-)[a-zA-Z\d-]{1,63}(?<!-)\.?)$"
 
+
 def is_valid_hostname(hostname):
     return re.compile(hostname_regex).match(hostname)
 
@@ -11,9 +12,9 @@ def is_valid_hostname(hostname):
 def is_valid_ip(ip):
     try:
         ipaddress.ip_address(ip)
-        return True
     except ValueError:
         return False
+    return True
 
 
 def is_valid_target(target):
@@ -30,6 +31,7 @@ def is_valid_target(target):
         except ValueError:
             return False
     return True
+
 
 def parse_target(target):
     if not is_valid_target(target):
