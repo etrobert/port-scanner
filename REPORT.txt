@@ -96,3 +96,5 @@ Lecture de la doc du module ipaddress
 Implementation d'une version d'argument parser
 Investigation de pytest
 Implémentation de batteries de test
+Mise a jour de la structure du projet
+Recherche sur setuptools

@@ -1,5 +1,3 @@
-#!/usr/bin/python
-
 import subprocess
 import sys
 import os
@@ -16,7 +14,7 @@ def new_filename(pattern):
     return pattern % i
 
 
-if __name__ == "__main__":
+def main():
     arguments = parse_args()
     tmp_filename = new_filename(".scan%s.xml")
     returncode = subprocess.call(
