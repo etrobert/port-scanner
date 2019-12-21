@@ -1,6 +1,7 @@
 import subprocess
 import sys
 import os
+from distutils.spawn import find_executable
 from .parse_args import parse_args
 
 
@@ -14,7 +15,18 @@ def new_filename(pattern):
     return pattern % i
 
 
+def test_requirements():
+    required_programs = ["nmap", "xsltproc"]
+    missing_programs = [
+        name for name in required_programs if not find_executable(name)]
+    if missing_programs:
+        print("Error: the following executable dependencies are missing:",
+              " ".join(missing_programs), file=sys.stderr)
+        exit(1)
+
+
 def main():
+    test_requirements()
     arguments = parse_args()
     tmp_filename = new_filename(".scan%s.xml")
     returncode = subprocess.call(
