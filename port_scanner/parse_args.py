@@ -54,16 +54,18 @@ def parse_targets_file(filename):
 
 def parse_args():
     parser = argparse.ArgumentParser()
+    parser.add_argument("-o", dest="outfile", default="scan.html",
+                        help="place output in file outfile. defaults to scan.html")
     target_group = parser.add_argument_group(
         'target specification',
         'A target can be a hostname, IP address, network or interface'
     ).add_mutually_exclusive_group(required=True)
-    target_group.add_argument("-f", "--file", type=parse_targets_file,
+    target_group.add_argument("-f", dest="infile", type=parse_targets_file,
                               help="file containing newline separated targets")
     target_group.add_argument("target", default=[], type=parse_target,
                               nargs="*", help="target")
     args = parser.parse_args()
-    if args.file is not None:
-        args.target = args.file
-        del args.file
+    if args.infile is not None:
+        args.target = args.infile
+        del args.infile
     return args

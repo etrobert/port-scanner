@@ -1,5 +1,5 @@
-.scan*.xml
-scan*.html
+.*.xml
+*.html
 
 *.pyc
 __pycache__
