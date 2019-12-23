@@ -7,13 +7,21 @@ import sys
 def assert_exit(args, code):
     __tracebackhide__ = True
     with mock.patch.object(sys, 'argv', args):
-        with pytest.raises(SystemExit) as pytest_wrapped_e:
+        try:
             main()
-        assert pytest_wrapped_e.type == SystemExit
-        assert pytest_wrapped_e.value.code == code
+            assert code == 0
+        except SystemExit as se:
+            assert se.code == code
 
 
 def test():
-    # TODO Specify sys.argv
     assert_exit(["port_scanner", "-h"], 0)
+    assert_exit(["port_scanner", "--help"], 0)
+    assert_exit(["port_scanner", "-h", "hostname"], 0)
+    assert_exit(["port_scanner", "-f", "emptyfile"], 0)
+    assert_exit(["port_scanner", "-f", "missingfile"], 2)
+    assert_exit(["port_scanner", "--this-is-fake"], 2)
+    assert_exit(["port_scanner", "-b"], 2)
+    assert_exit(["port_scanner", "-hb"], 2)
     assert_exit(["port_scanner"], 2)
+    assert_exit(["port_scanner", "host.not.found"], 0)
