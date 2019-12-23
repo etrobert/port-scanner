@@ -22,7 +22,7 @@ def test_requirements():
     if missing_programs:
         print("Error: the following executable dependencies are missing:",
               " ".join(missing_programs), file=sys.stderr)
-        exit(1)
+        exit(2)
 
 
 def main():
@@ -38,7 +38,7 @@ def main():
          "-oX", tmp_filename] + arguments.target)
     # if nmap encountered an error, terminate
     if returncode:
-        sys.exit()
+        sys.exit(returncode)
     try:
         html_filename = new_filename("scan%s.html")
         subprocess.call(["xsltproc", tmp_filename, "-o", html_filename])
