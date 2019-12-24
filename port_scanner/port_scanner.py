@@ -1,14 +1,14 @@
 import subprocess
 import sys
 import os
-from distutils.spawn import find_executable
+import distutils.spawn
 from .parse_args import parse_args
 
 
 def test_requirements():
     required_programs = ["nmap", "xsltproc"]
     missing_programs = [
-        name for name in required_programs if not find_executable(name)]
+        name for name in required_programs if not distutils.spawn.find_executable(name)]
     if missing_programs:
         print("Error: the following executable dependencies are missing:",
               " ".join(missing_programs), file=sys.stderr)

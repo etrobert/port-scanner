@@ -2,6 +2,7 @@ from port_scanner.port_scanner import main
 import pytest
 from unittest import mock
 import sys
+import distutils.spawn
 
 
 def assert_exit(args, code):
@@ -14,7 +15,7 @@ def assert_exit(args, code):
             assert se.code == code
 
 
-def test():
+def test_return_codes():
     assert_exit(["port_scanner", "-h"], 0)
     assert_exit(["port_scanner", "--help"], 0)
     assert_exit(["port_scanner", "-h", "hostname"], 0)
@@ -25,3 +26,12 @@ def test():
     assert_exit(["port_scanner", "-hb"], 2)
     assert_exit(["port_scanner"], 2)
     assert_exit(["port_scanner", "host.not.found"], 0)
+
+
+def test_dependancy():
+    assert_exit(["port_scanner", "host.not.found"], 0)
+    original_find_executable = distutils.spawn.find_executable
+    with mock.patch.object(
+            distutils.spawn, 'find_executable',
+            lambda name: None if name == "nmap" else original_find_executable(name)):
+        assert_exit(["port_scanner", "host.not.found"], 2)
