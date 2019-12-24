@@ -5,14 +5,19 @@ import sys
 import distutils.spawn
 
 
-def assert_exit(args, code):
+def run_with_args(args):
     __tracebackhide__ = True
     with mock.patch.object(sys, 'argv', args):
-        try:
-            main()
-            assert code == 0
-        except SystemExit as se:
-            assert se.code == code
+        main()
+
+
+def assert_exit(args, code):
+    __tracebackhide__ = True
+    try:
+        run_with_args(args)
+        assert code == 0
+    except SystemExit as se:
+        assert se.code == code
 
 
 def test_return_codes():
