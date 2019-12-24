@@ -8,5 +8,6 @@ setup(
         'console_scripts': [
             'port_scanner = port_scanner.port_scanner:main'
         ]
-    }
+    },
+    install_requires=['py2-ipaddress;python_version<"3"']
 )

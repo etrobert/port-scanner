@@ -48,7 +48,7 @@ def parse_targets_file(filename):
             if not is_valid_target(l):
                 raise argparse.ArgumentTypeError(l + " is not a valid target")
         return lines
-    except OSError as error:
+    except IOError as error:
         raise argparse.ArgumentTypeError(error.strerror)
 
 

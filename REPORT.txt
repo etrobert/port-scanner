@@ -87,8 +87,8 @@ nmap -A contient plus d'options qui mériteraient d'être investiguées et n'est
 Tests de ftp-anon.
 Affichage par default de ftp-anon jugé trop peu clair pour être inclus dans un programme "simple": abandon
 
-Mercredi Soir
-=============
+v0.2
+====
 
 Analyse des attentes du mail
 Lecture de la doc de argsparse
@@ -98,3 +98,10 @@ Investigation de pytest
 Implémentation de batteries de test
 Mise a jour de la structure du projet
 Recherche sur setuptools
+
+Investigation des tests d'ingégration en python
+Investigation de pytest plus en profondeur
+Recherche de mock
+Ajout de tests de dépendance manquante
+Utilisation de tox
+Mises à jour pour faire fonctionner python2

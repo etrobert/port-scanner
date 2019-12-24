@@ -1,8 +1,12 @@
 from port_scanner.port_scanner import main
 import pytest
-from unittest import mock
 import sys
 import distutils.spawn
+
+try:
+    from unittest import mock
+except ImportError:
+    import mock
 
 
 def run_with_args(args):
