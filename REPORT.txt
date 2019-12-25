@@ -105,3 +105,4 @@ Recherche de mock
 Ajout de tests de dépendance manquante
 Utilisation de tox
 Mises à jour pour faire fonctionner python2
+Recherche sur le parsing HTML en python (BeautifulSoup, html.parse)
