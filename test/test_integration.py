@@ -2,7 +2,6 @@ from port_scanner.port_scanner import main
 import pytest
 import sys
 import distutils.spawn
-from bs4 import BeautifulSoup
 try:
     from unittest import mock
 except ImportError:
@@ -31,9 +30,3 @@ def test_dependancy():
             distutils.spawn, 'find_executable',
             lambda name: None if name == "nmap" else original_find_executable(name)):
         assert_exit(["port_scanner", "host.not.found"], 2)
-
-
-def assert_open_count(filename, count):
-    __tracebackhide__ = True
-    soup = BeautifulSoup(open(filename))
-    assert len(soup.find_all(class_="open")) == count

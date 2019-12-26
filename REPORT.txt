@@ -106,3 +106,8 @@ Ajout de tests de dépendance manquante
 Utilisation de tox
 Mises à jour pour faire fonctionner python2
 Recherche sur le parsing HTML en python (BeautifulSoup, html.parse)
+Recherche sur l'isolement reseau
+Recherche sur les Linux Namespaces
+Experimentation avec ip netns
+Experimentation du package python netns
+Implémentation d'un premier test avec isolement réseau
