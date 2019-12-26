@@ -3,27 +3,12 @@ import pytest
 import sys
 import distutils.spawn
 from bs4 import BeautifulSoup
-
-
 try:
     from unittest import mock
 except ImportError:
     import mock
 
-
-def run_with_args(args):
-    __tracebackhide__ = True
-    with mock.patch.object(sys, 'argv', args):
-        main()
-
-
-def assert_exit(args, code):
-    __tracebackhide__ = True
-    try:
-        run_with_args(args)
-        assert code == 0
-    except SystemExit as se:
-        assert se.code == code
+from toolbox import assert_exit
 
 
 def test_return_codes():
