@@ -50,6 +50,5 @@ def test_dependancy():
 
 def assert_open_count(filename, count):
     __tracebackhide__ = True
-   soup = BeautifulSoup(filename)
-   assert len(soup.find_all(class_="open")) == count
-
+    soup = BeautifulSoup(open(filename))
+    assert len(soup.find_all(class_="open")) == count
