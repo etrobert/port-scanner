@@ -111,3 +111,5 @@ Recherche sur les Linux Namespaces
 Experimentation avec ip netns
 Experimentation du package python netns
 Implémentation d'un premier test avec isolement réseau
+Recherche sur http.server
+Recherche sur threading
