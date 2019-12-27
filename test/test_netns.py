@@ -28,17 +28,27 @@ def assert_open_count(filename, count):
     assert len(soup.find_all(class_="open")) == count
 
 
-def test_netns():
-    test_filename = "test.html"
-    try:
+class NetNSSandbox():
+    def __init__(self):
         run_steps([
             # create a network namespace named "sandbox"
             'ip netns add sandbox',
             # make the loopback interface UP
             'ip netns exec sandbox ip link set dev lo up',
         ])
-        with netns.NetNS(nsname="sandbox"):
-            assert_exit(["port_scanner", "localhost", "-o", test_filename], 0)
-            assert_open_count(test_filename, 0)
-    finally:
+        self.ns = netns.NetNS(nsname="sandbox")
+
+    def __enter__(self):
+        self.ns.__enter__()
+
+    def __exit__(self, type, value, traceback):
+        self.ns.__exit__()
         run_steps(["ip netns del sandbox"], ignore_errors=True)
+
+
+def test_netns():
+    test_filename = "test.html"
+
+    with NetNSSandbox():
+        assert_exit(["port_scanner", "localhost", "-o", test_filename], 0)
+        assert_open_count(test_filename, 0)
