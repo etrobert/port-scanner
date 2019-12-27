@@ -1,7 +1,5 @@
-import netns
-import subprocess
-
 from toolbox import assert_exit
+from netns_sandbox import NetNSSandbox
 
 from bs4 import BeautifulSoup
 
@@ -17,39 +15,9 @@ except ImportError:
     import HTMLParser  # Python2
 
 
-def run_steps(steps, ignore_errors=False):
-    for step in steps:
-        try:
-            print('+ {}'.format(step))
-            subprocess.check_call(step, shell=True)
-        except subprocess.CalledProcessError:
-            if ignore_errors:
-                pass
-            else:
-                raise
-
-
 def assert_open_count(filename, count):
     soup = BeautifulSoup(open(filename), features="html.parser")
     assert len(soup.find_all(class_="open")) == count
-
-
-class NetNSSandbox():
-    def __init__(self):
-        run_steps([
-            # create a network namespace named "sandbox"
-            'ip netns add sandbox',
-            # make the loopback interface UP
-            'ip netns exec sandbox ip link set dev lo up',
-        ])
-        self.ns = netns.NetNS(nsname="sandbox")
-
-    def __enter__(self):
-        self.ns.__enter__()
-
-    def __exit__(self, type, value, traceback):
-        self.ns.__exit__()
-        run_steps(["ip netns del sandbox"], ignore_errors=True)
 
 
 def test_netns():
