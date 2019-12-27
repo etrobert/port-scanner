@@ -25,6 +25,8 @@ try:
 except ImportError:
     import HTMLParser  # Python2
 
+import os
+
 
 def run_steps(steps, ignore_errors=False):
     """Runs the system commands specified in steps.
@@ -62,7 +64,22 @@ def sandbox_netns():
     run_steps(["ip netns del sandbox"], ignore_errors=True)
 
 
-def test_options():
+@pytest.fixture
+def empty_file():
+    """File Fixture used to test program options.
+
+    Requires the ability to create a file in the current folder.
+    Requires a file named "emptyfile" not to be
+    already present in the current folder.
+    """
+    if os.path.isfile("emptyfile"):
+        raise Exception("emptyfile already exists")
+    open("emptyfile", 'w').close()
+    yield
+    os.remove("emptyfile")
+
+
+def test_options(empty_file):
     assert_exit(["port_scanner", "-h"], 0)
     assert_exit(["port_scanner", "--help"], 0)
     assert_exit(["port_scanner", "-h", "hostname"], 0)
