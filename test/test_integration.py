@@ -1,4 +1,5 @@
 from port_scanner.port_scanner import main
+
 import pytest
 import sys
 import distutils.spawn
@@ -9,16 +10,7 @@ except ImportError:
 
 from toolbox import assert_exit
 
-import subprocess
-import netns
-
 from bs4 import BeautifulSoup
-
-try:
-    import http.server as BaseHTTPServer  # Python3
-except:
-    import BaseHTTPServer  # Python2
-import threading
 
 try:
     import html  # Python3
@@ -34,6 +26,8 @@ def run_steps(steps, ignore_errors=False):
     If ignore_errors is set to True, continues upon failed commands,
     else throws subprocess.CalledProcessError.
     """
+
+    import subprocess
 
     for step in steps:
         try:
@@ -54,6 +48,9 @@ def sandbox_netns():
     Requires for the name "sandbox" not to be taken
     by an already existing Linux Network Namespace.
     """
+
+    import netns
+
     run_steps([
         # create a network namespace named "sandbox"
         'ip netns add sandbox',
@@ -63,6 +60,21 @@ def sandbox_netns():
     with netns.NetNS(nsname="sandbox"):
         yield
     run_steps(["ip netns del sandbox"], ignore_errors=True)
+
+
+@pytest.fixture
+def http_server(sandbox_netns):
+    try:
+        import http.server as BaseHTTPServer  # Python3
+    except:
+        import BaseHTTPServer  # Python2
+    import threading
+
+    webserver = BaseHTTPServer.HTTPServer(
+        ('', 8000), BaseHTTPServer.BaseHTTPRequestHandler)
+    threading.Thread(target=webserver.serve_forever).start()
+    yield
+    webserver.shutdown()
 
 
 @pytest.fixture
@@ -104,15 +116,6 @@ def test_dependancy(sandbox_netns):
 def assert_open_count(filename, count):
     soup = BeautifulSoup(open(filename), features="html.parser")
     assert len(soup.find_all(class_="open")) == count
-
-
-@pytest.fixture
-def http_server(sandbox_netns):
-    webserver = BaseHTTPServer.HTTPServer(
-        ('', 8000), BaseHTTPServer.BaseHTTPRequestHandler)
-    threading.Thread(target=webserver.serve_forever).start()
-    yield
-    webserver.shutdown()
 
 
 def test_html(sandbox_netns):
