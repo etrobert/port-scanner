@@ -79,8 +79,9 @@ def http_server(sandbox_netns):
 
 @pytest.fixture
 def empty_file():
-    """File Fixture used to test program options.
+    """Fixture representing an empty file.
 
+    Used to test program options.
     Requires the ability to create a file in the current folder.
     Requires a file named "emptyfile" not to be
     already present in the current folder.
