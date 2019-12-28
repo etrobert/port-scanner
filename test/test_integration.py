@@ -122,9 +122,11 @@ def test_html(sandbox_netns):
     test_filename = "test.html"
     assert_exit(["port_scanner", "localhost", "-o", test_filename], 0)
     assert_open_count(test_filename, 0)
+    os.remove(test_filename)
 
 
 def test_html_http_server(sandbox_netns, http_server):
     test_filename = "test.html"
     assert_exit(["port_scanner", "localhost", "-o", test_filename], 0)
     assert_open_count(test_filename, 1)
+    os.remove(test_filename)
