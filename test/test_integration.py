@@ -106,15 +106,25 @@ def assert_open_count(filename, count):
     assert len(soup.find_all(class_="open")) == count
 
 
+@pytest.fixture
+def http_server(sandbox_netns):
+    with netns.NetNS(nsname="sandbox"):
+        webserver = BaseHTTPServer.HTTPServer(
+            ('', 8000), BaseHTTPServer.BaseHTTPRequestHandler)
+        threading.Thread(target=webserver.serve_forever).start()
+        yield
+        webserver.shutdown()
+
+
 def test_html(sandbox_netns):
     test_filename = "test.html"
     with netns.NetNS(nsname="sandbox"):
         assert_exit(["port_scanner", "localhost", "-o", test_filename], 0)
         assert_open_count(test_filename, 0)
 
-        webserver = BaseHTTPServer.HTTPServer(
-            ('', 8000), BaseHTTPServer.BaseHTTPRequestHandler)
-        threading.Thread(target=webserver.serve_forever).start()
+
+def test_html_http_server(sandbox_netns, http_server):
+    test_filename = "test.html"
+    with netns.NetNS(nsname="sandbox"):
         assert_exit(["port_scanner", "localhost", "-o", test_filename], 0)
-        webserver.shutdown()
         assert_open_count(test_filename, 1)
