@@ -60,7 +60,8 @@ def sandbox_netns():
         # make the loopback interface UP
         'ip netns exec sandbox ip link set dev lo up',
     ])
-    yield
+    with netns.NetNS(nsname="sandbox"):
+        yield
     run_steps(["ip netns del sandbox"], ignore_errors=True)
 
 
@@ -92,13 +93,12 @@ def test_options(empty_file):
 
 
 def test_dependancy(sandbox_netns):
-    with netns.NetNS(nsname="sandbox"):
-        assert_exit(["port_scanner", "host.not.found"], 0)
-        original_find_executable = distutils.spawn.find_executable
-        with mock.patch.object(
-                distutils.spawn, 'find_executable',
-                lambda name: None if name == "nmap" else original_find_executable(name)):
-            assert_exit(["port_scanner", "host.not.found"], 2)
+    assert_exit(["port_scanner", "host.not.found"], 0)
+    original_find_executable = distutils.spawn.find_executable
+    with mock.patch.object(
+            distutils.spawn, 'find_executable',
+            lambda name: None if name == "nmap" else original_find_executable(name)):
+        assert_exit(["port_scanner", "host.not.found"], 2)
 
 
 def assert_open_count(filename, count):
@@ -108,23 +108,20 @@ def assert_open_count(filename, count):
 
 @pytest.fixture
 def http_server(sandbox_netns):
-    with netns.NetNS(nsname="sandbox"):
-        webserver = BaseHTTPServer.HTTPServer(
-            ('', 8000), BaseHTTPServer.BaseHTTPRequestHandler)
-        threading.Thread(target=webserver.serve_forever).start()
-        yield
-        webserver.shutdown()
+    webserver = BaseHTTPServer.HTTPServer(
+        ('', 8000), BaseHTTPServer.BaseHTTPRequestHandler)
+    threading.Thread(target=webserver.serve_forever).start()
+    yield
+    webserver.shutdown()
 
 
 def test_html(sandbox_netns):
     test_filename = "test.html"
-    with netns.NetNS(nsname="sandbox"):
-        assert_exit(["port_scanner", "localhost", "-o", test_filename], 0)
-        assert_open_count(test_filename, 0)
+    assert_exit(["port_scanner", "localhost", "-o", test_filename], 0)
+    assert_open_count(test_filename, 0)
 
 
 def test_html_http_server(sandbox_netns, http_server):
     test_filename = "test.html"
-    with netns.NetNS(nsname="sandbox"):
-        assert_exit(["port_scanner", "localhost", "-o", test_filename], 0)
-        assert_open_count(test_filename, 1)
+    assert_exit(["port_scanner", "localhost", "-o", test_filename], 0)
+    assert_open_count(test_filename, 1)
