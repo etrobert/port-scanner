@@ -129,5 +129,23 @@ def test_html(sandbox_netns):
 def test_html_http_server(sandbox_netns, http_server):
     test_filename = "test.html"
     assert_exit(["port_scanner", "localhost", "-o", test_filename], 0)
-    assert_open_count(test_filename, 1)
-    os.remove(test_filename)
+    try:
+        soup = BeautifulSoup(open(test_filename), features="html.parser")
+        open_class = soup.find_all(class_="open")
+        assert len(open_class) == 1
+        port_details = [x.contents[0] for x in open_class[0].find_all('td')]
+        assert port_details[0].strip() == "8000"  # port
+        assert port_details[1].strip() == "tcp"  # transport_protocol
+        assert port_details[2].strip() == "open"  # state
+        assert port_details[3].strip() == "http"  # service
+        assert port_details[5].strip() == "BaseHTTPServer"  # product
+
+        # Test that the scripts ran
+        script_class = soup.find_all(class_="script")
+        assert len(script_class) == 2
+        assert script_class[0].find_all(
+            "td")[1].contents[0].strip() == "http-server-header"
+        assert script_class[1].find_all(
+            "td")[1].contents[0].strip() == "vulscan"
+    finally:
+        os.remove(test_filename)
