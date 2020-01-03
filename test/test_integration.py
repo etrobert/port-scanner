@@ -1,14 +1,11 @@
-from port_scanner.port_scanner import main
-
 import pytest
-import sys
 import distutils.spawn
 try:
     from unittest import mock
 except ImportError:
     import mock
 
-from toolbox import assert_exit
+from assert_exit import assert_exit
 
 from bs4 import BeautifulSoup
 
