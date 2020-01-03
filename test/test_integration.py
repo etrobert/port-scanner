@@ -140,12 +140,9 @@ def test_html_http_server(sandbox_netns, http_server):
         assert port_details[3].strip() == "http"  # service
         assert port_details[5].strip() == "BaseHTTPServer"  # product
 
-        # Test that the scripts ran
+        # Test that the vulscan script ran
         script_class = soup.find_all(class_="script")
-        assert len(script_class) == 2
-        assert script_class[0].find_all(
-            "td")[1].contents[0].strip() == "http-server-header"
-        assert script_class[1].find_all(
-            "td")[1].contents[0].strip() == "vulscan"
+        assert next(script for script in script_class if script.find_all(
+            "td")[1].contents[0].strip() == "vulscan")
     finally:
         os.remove(test_filename)
