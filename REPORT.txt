@@ -2,6 +2,50 @@
 Rapport
 =======
 
+v0.2
+====
+
+Ressources utilisées
+====================
+Contrairement à la première version, mon objectif n'était pas de finir en deux jours,
+mais plutôt d'avoir quelque chose d'intéressant à rendre.
+J'ai donc travaillé dessus sur des séances moins intenses mais plus nombreuses,
+réparties sur une durée plus longue (notamment entrecoupées par les fêtes de fin d'année).
+J'ai utilisé de nombreux outils et concepts que j'avais peu voire jamais utilisés,
+je me suis donc beaucoup référé à leur docs. (setuptools, Linux NETNS, pytest, tox...)
+
+Logs
+====
+Analyse des attentes du mail
+Lecture de la doc de argsparse
+Lecture de la doc du module ipaddress
+Implementation d'une version d'argument parser
+Investigation de pytest
+Implémentation de batteries de test
+Mise a jour de la structure du projet
+Recherche sur setuptools
+
+Investigation des tests d'ingégration en python
+Investigation de pytest plus en profondeur
+Recherche de mock
+Ajout de tests de dépendance manquante
+Utilisation de tox
+Mises à jour pour faire fonctionner python2
+Recherche sur le parsing HTML en python (BeautifulSoup, html.parse)
+Recherche sur l'isolement reseau
+Recherche sur les Linux Namespaces
+Experimentation avec ip netns
+Experimentation du package python netns
+Implémentation d'un premier test avec isolement réseau
+Recherche sur http.server
+Recherche sur threading
+Organisation des ressources de tests en fixtures
+Update README
+
+v0.1
+====
+Je laisse le REPORT ci dessous pour référence, mais la plupart de son contenu n'est plus à jour.
+
 Ressources Utilisées
 ====================
 J'ai passé les deux soirées de samedi et dimanche sur l'exercice.
@@ -86,30 +130,3 @@ nmap -O empêche le lancement du programme si l'utilisateur n'est pas root: aban
 nmap -A contient plus d'options qui mériteraient d'être investiguées et n'est pas bloquant si non root
 Tests de ftp-anon.
 Affichage par default de ftp-anon jugé trop peu clair pour être inclus dans un programme "simple": abandon
-
-v0.2
-====
-
-Analyse des attentes du mail
-Lecture de la doc de argsparse
-Lecture de la doc du module ipaddress
-Implementation d'une version d'argument parser
-Investigation de pytest
-Implémentation de batteries de test
-Mise a jour de la structure du projet
-Recherche sur setuptools
-
-Investigation des tests d'ingégration en python
-Investigation de pytest plus en profondeur
-Recherche de mock
-Ajout de tests de dépendance manquante
-Utilisation de tox
-Mises à jour pour faire fonctionner python2
-Recherche sur le parsing HTML en python (BeautifulSoup, html.parse)
-Recherche sur l'isolement reseau
-Recherche sur les Linux Namespaces
-Experimentation avec ip netns
-Experimentation du package python netns
-Implémentation d'un premier test avec isolement réseau
-Recherche sur http.server
-Recherche sur threading

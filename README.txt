@@ -1,41 +1,50 @@
 ============
-port-scanner
+port_scanner
 ============
 
 Description:
 ============
-port-scanner est un scanner de port simple à utiliser qui sort ses résultats en une page HTML.
+port_scanner est un scanner de port simple à utiliser qui sort ses résultats en une page HTML.
 
 Dépendances:
 ============
-python    -> Python Interpreter (v2 or 3)
+python    -> Interpreteur Python (v2 or 3)
 nmap      -> Scan
 vulscan   -> Script de Scan de Vulnérabilités (Module Nmap)
 xsltproc  -> Génération de HTML
 
+Dépendances d'installation:
+===========================
+setuptools      -> Outil de packaging python
+pip (optionnel) -> Installeur de packages
+
+Dépendances de tests:
+=====================
+ip  -> Création, modification et destruction de Linux Network Namespaces
+tox -> Automatisation de création de virtualenvs pour les tests
+
 Instructions d'utilisation:
 ===========================
-Usage: port-scanner [options] [cible...]
+usage: port_scanner [options] cible(s)
+usage détaillé: port_scanner [-h] [-o OUTFILE] (-f INFILE | target [target ...])
 
-port-scanner prend une liste de cibles à scanner en argument.
+options:
+  -h, --help  affiche un message d'aide et quitte
+  -o OUTFILE  écris le résultat du programme dans le fichier OUTFILE.
+              Vaut scan.html par default
+
+cible(s):
+port_scanner prend une liste de cibles à scanner en argument.
 Une cible peut être un host, une addresse IP, un réseau...
-Ex: port-scanner scanme.nmap.org
-Ex: port-scanner microsoft.com/24 192.168.0.1
-Ex: port-scanner 10.0.0-255.1-254
+Ex: port_scanner scanme.nmap.org
+Ex: port_scanner microsoft.com/24 192.168.0.1
 Alternativement, une liste de cibles peut être lue depuis un fichier, avec l'option:
--iL <inputfilename>
-Ex: port-scanner -iL cibles.txt
+-f INFILE
+Ex: port_scanner -f cibles.txt
 
-port-scanner peut déterminer l'addresse MAC des machines cibles dans un réseau local, SEULEMENT SI il est exécuté en tant que super utilisateur.
+port_scanner peut déterminer l'addresse MAC des machines cibles dans un réseau local, SEULEMENT SI il est exécuté en tant que super utilisateur.
 
-Option pour executer le scan CVE Vulscan avec votre propre base de donnée:
---script-args vulscandb=your_own_database
-Ex: port-scanner --script-args vulscandb=./cve.csv scanme.nmap.org
-
-port-scanner part du principe que le réseau utilisé est raisonnablement rapide et fiable afin d'accélerer le processus.
-
-port-scanner transmet toute option passée en argument à nmap.
-Aussi toute option définie dans nmap(1) qui ne rentre pas en conflit avec les options ajoutées d'office par port-scanner (cf. Implémentation) peuvent être ajoutées en paramètre de port-scanner.
+port_scanner part du principe que le réseau utilisé est raisonnablement rapide et fiable afin d'accélerer le processus.
 
 Instructions de déploiement:
 ============================
@@ -56,18 +65,21 @@ Instructions de déploiement:
     Sous ArchLinux, installer les packages docbook-xml et docbook-xsl.
     Sinon, les sources et certains binaires sont disponibles ici:
     http://xmlsoft.org/XSLT/downloads.html
-2) Extraire l'archive là où vous souhaitez installer port-scanner
-3) Add port-scanner to the PATH
-  Ajouter port-scanner dans un chemin du PATH.
-  Sous Linux, se placer dans le répertoire où vous avez installé port-scanner puis:
-  sudo ln -s `pwd`/port-scanner.py /usr/local/bin/port-scanner
+2) Extraire l'archive
+Ex: tar -xvf exercise.tgz
+3) Se placer dans le dossier extrait
+Ex: cd exercise
+4) Installer
+Ex (avec pip): pip install .
+Ex (sans pip): python ./setup.py install
 
 Instructions de tests:
 ======================
-port-scanner est un wrapper extremement léger autour de nmap et xsltproc.
-En tant que tel, il ne possède pas de tests.
+La plupart des tests d'intégration utilisent les Linux Network Namespaces.
+Pour pouvoir les créer, utiliser et supprimer,
+les tests nécessitent d'être lancés sous Linux en tant que super utilisateur.
 
-Implémentation:
-======
-port-scanner fait l'appel à nmap suivant:
-nmap -v -sV -Taggressive --script=vulscan/vulscan.nse -oX file args
+Vérifier que les dépendances de port_scanner sont bien installées.
+Vérifier que les dépendances de tests sont bien installées.
+Se placer dans le répertoire d'extraction et lancer tox.
+Ex: cd exercise && sudo tox
